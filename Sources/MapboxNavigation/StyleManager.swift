@@ -131,12 +131,10 @@ open class StyleManager {
             print("Unable to get sunrise or sunset. Automatic style switching has been disabled.")
             return
         }
-        
-        timeOfDayTimer = Timer(timeInterval: interval + 1,
-                               repeats: false,
-                               block: { [weak self] _ in
+
+        timeOfDayTimer = Timer.scheduledTimer(withTimeInterval: interval + 1, repeats: false) { [weak self] _ in
             self?.timeOfDayChanged()
-        })
+        }
     }
     
     @objc func preferredContentSizeChanged(_ notification: Notification) {
@@ -159,6 +157,7 @@ open class StyleManager {
                 currentStyleType = styleType
                 currentStyle = style
                 delegate?.styleManager(self, didApply: style)
+                break
             }
         }
         
@@ -226,6 +225,7 @@ open class StyleManager {
         forceRefreshAppearance()
     }
     
+    // workaround to refresh appearance by removing all views and then adding them again
     func forceRefreshAppearance() {
         for window in UIApplication.shared.windows {
             for view in window.subviews {

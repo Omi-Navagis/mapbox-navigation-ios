@@ -1,5 +1,22 @@
 # Changes to the Mapbox Navigation SDK for iOS
 
+## v1.4.0
+
+* Fixed an issue when feedback UI was always appearing for short routes ([#2871](https://github.com/mapbox/mapbox-navigation-ios/pull/2871))
+* Fixed automatic day/night switching ([#2881](https://github.com/mapbox/mapbox-navigation-ios/pull/2881))
+* Fixed crash when switching between day / night modes ([#2896](https://github.com/mapbox/mapbox-navigation-ios/pull/2896))
+
+## v1.3.0
+
+* MapboxCoreNavigation can now be installed using Swift Package Manager. ([#2771](https://github.com/mapbox/mapbox-navigation-ios/pull/2771))
+* The CarPlay guidance panel now shows lane guidance. ([#1885](https://github.com/mapbox/mapbox-navigation-ios/pull/1885))
+* Old versions of routing tiles are automatically deleted from the cache to save storage space. ([#2807](https://github.com/mapbox/mapbox-navigation-ios/pull/2807))
+* Fixed an issue where lane guidance icons would indicate the wrong arrow for certain maneuvers. ([#2796](https://github.com/mapbox/mapbox-navigation-ios/pull/2796), [#2809](https://github.com/mapbox/mapbox-navigation-ios/pull/2809))
+* Fixed a crash showing a junction view. ([#2805](https://github.com/mapbox/mapbox-navigation-ios/pull/2805))
+* Fixed an issue with CarPlay visual instructions where U-Turn maneuver icons were not being flipped properly based on regional driving side ([#2803](https://github.com/mapbox/mapbox-navigation-ios/pull/2803)) 
+* Fixed swiping for right-to-left languages for the Guidance Card UI to be more intuitive. ([#2724](https://github.com/mapbox/mapbox-navigation-ios/pull/2724))
+* `NavigationViewController` can now manage multiple status banners one after another. Renamed the `NavigationViewController.showStatus(title:spinner:duration:animated:interactive:)` method to `NavigationViewController.show(_:)` and added a corresponding `NavigationViewController.hide(_:)` method. Renamed the `NavigationStatusPresenter.showStatus(title:spinner:duration:animated:interactive:)` method to `NavigationStatusPresenter.show(_:)` and added a `NavigationStatusPresenter.hide(_:)` method. ([#2747](https://github.com/mapbox/mapbox-navigation-ios/pull/2747))
+
 ## v1.2.1
 
 * Increased the minimum versions of `MapboxNavigationNative` to v30.0 and `MapboxCommon` to v9.2.0. ([#2793](https://github.com/mapbox/mapbox-navigation-ios/pull/2793))
@@ -25,6 +42,16 @@
   * `NavigationMapViewDelegate.navigationMapView(_:alternativeRouteCasingStyleLayerWithIdentifier:source:)` to style the casing of alternative route.
 * Fixed an issue where the route line periodically peeked out from behind the user puck even though `NavigationViewController.routeLineTracksTraversal` was enabled. ([#2737](https://github.com/mapbox/mapbox-navigation-ios/pull/2737))
 * Created the `UserHaloCourseView` similar to `UserCourseView` for approximate location on iOS 14 during the navigation to represent user location. Allow the switch between `UserHaloCourseView` and `UserCourseView` when precise mode is changed. ([#2664](https://github.com/mapbox/mapbox-navigation-ios/pull/2664))
+* Added option to show route duration callouts when previewing route alternatives ([#2734](https://github.com/mapbox/mapbox-navigation-ios/pull/2734)):
+  * `NavigationMapView.showRouteDurations(along routes:)` to show duration annotation callouts on the map for the provided routes.
+  * `NavigationMapView.removeRouteDurations()` to remove any route duration annotations currently displayed on the map.
+* Added convenience methods for visualizing geographic information on a map style as a debugging tool. ([#2734](https://github.com/mapbox/mapbox-navigation-ios/pull/2734)):
+  * `MGStyle.addDebugCircleLayer(identifier:coordinate:color:)` to add a MGLCircleStyleLayer with the specified coordinate and color.
+  * `MGStyle.removeDebugCircleLayers()` to remove from the style all MGLCircleStyleLayers added via `MGStyle.addDebugCircleLayer(identifier:coordinate:color:)`
+  * `MGStyle.addDebugLineLayer(identifier:coordinates:color:)` to add a MGLLineStyleLayer with the specified coordinates and color.
+  * `MGStyle.removeDebugLineLayers()` to remove from the style all MGLLineStyleLayers added via `MGStyle.addDebugLineLayer(identifier:coordinates:color:)`
+  * `MGStyle.addDebugPolygonLayer(identifier:coordinates:color:)` to add a MGLFillStyleLayer with the specified coordinates and color.
+  * `MGStyle.removeDebugLineLayers()` to remove from the style all MGLFillStyleLayers added via `MGStyle.addDebugPolygonLayer(identifier:coordinates:color:)`
 
 ### Instruction banners
 
@@ -32,6 +59,7 @@
 * Fixed an issue which was preventing the ability to scroll between instructions cards on iOS 14 using workaround. ([#2755](https://github.com/mapbox/mapbox-navigation-ios/pull/2755))
 * Fixed an instructions cards layout issue that arose when changing orientation (portrait to landscape). ([#2755](https://github.com/mapbox/mapbox-navigation-ios/pull/2755))
 * Fixed swiping for right-to-left languages for the traditional top banner to be more intuitive. ([#2755](https://github.com/mapbox/mapbox-navigation-ios/pull/2755))
+* Fixed an issue which was returning incorrect card width after multiple rotations on iPads by adding `InstructionsCardViewController.viewWillTransition(to:with:)`. ([#2724](https://github.com/mapbox/mapbox-navigation-ios/pull/2724))
 
 ### Location tracking
 
@@ -80,7 +108,7 @@
 
 ### Packaging
 
-* By default, usage of Mapbox APIs is now [billed](https://www.mapbox.com/pricing/#navmaus) together based on [monthly active users](https://docs.mapbox.com/help/glossary/monthly-active-users/) rather than individually by HTTP request. Learn more in the [pricing by product documentation](https://docs.mapbox.com/accounts/overview/pricing/#navigation-sdk-for-ios-and-android). ([#2405](https://github.com/mapbox/mapbox-navigation-ios/pull/2405))
+* By default, usage of Mapbox APIs is now [billed](https://www.mapbox.com/pricing/#navmaus) together based on [monthly active users](https://docs.mapbox.com/help/glossary/monthly-active-users/) rather than individually by HTTP request. Learn more in the [pricing guide](https://docs.mapbox.com/ios/navigation/guides/pricing/). ([#2405](https://github.com/mapbox/mapbox-navigation-ios/pull/2405))
 * Carthage v0.35 or above is now required for installing this SDK if you use Carthage. ([`81a36d0`](https://github.com/mapbox/mapbox-navigation-ios/commit/81a36d090e8a0602b7144ee7697b7857675b496f)) 
 * MapboxNavigation depends on Mapbox Maps SDK for iOS v6.0.0, and MapboxCoreNavigation depends on builds of MapboxNavigationNative and MapboxCommon that require authentication. Before CocoaPods or Carthage can download Mapbox.framework, MapboxNavigationNative.framework, and MapboxCommon.framework, you need to create a special-purpose access token. See [the updated installation instructions in the readme](./README.md#installing-the-latest-prerelease) for more details. ([#2437](https://github.com/mapbox/mapbox-navigation-ios/pull/2437), [#2477](https://github.com/mapbox/mapbox-navigation-ios/pull/2477))
 * If you install this SDK using Carthage, you need to also add MapboxCommon.framework to your application target’s Embed Frameworks build phase. ([#2477](https://github.com/mapbox/mapbox-navigation-ios/pull/2477))
